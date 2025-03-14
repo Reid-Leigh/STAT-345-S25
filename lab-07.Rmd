@@ -10,7 +10,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
+library(matlib)
 C <- matrix(c(  6, -1, -1, -1, -1,
                -1,  6, -1, -1, -1,
                -1, -1,  6, -1, -1,
