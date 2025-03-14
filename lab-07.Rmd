@@ -1,0 +1,65 @@
+---
+title: "STAT 345 Lab Seven"
+author: "Reid Leigh"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+C <- matrix(c(  6, -1, -1, -1, -1,
+               -1,  6, -1, -1, -1,
+               -1, -1,  6, -1, -1,
+               -1, -1, -1,  6, -1,
+               -1, -1, -1, -1, 6), byrow = TRUE, ncol = 5, nrow = 5
+  
+)
+A <- matrix(c( 10, -2, -2, -2, -2,
+               -2,  9, -2, -2, -1,
+               -2, -2,  9, -2, -1,
+               -2, -2, -2, 10, -2,
+               -2, -1, -1, -2, 8), byrow = TRUE, ncol = 5, nrow = 5
+  
+)
+M <- matrix(c(  4, -1, -1, -1, -1,
+               -1,  4, -1, -1, -1,
+               -1, -1,  4, -1, -1,
+               -1, -1, -1,  4, -1,
+                1,  1,  1,  1,  1), byrow = TRUE, ncol = 5, nrow = 5
+)
+N <- matrix(c( 8, -2, -2, -2,
+               -2, 8, -2, -2,
+               -2, -2, 8, -2, 
+               -2, -2, -2, 8), byrow = TRUE, ncol = 4, nrow = 4
+)
+O <- matrix(c( 6, -2, -2, -2,
+               -2, 6, -2, -2,
+               -2, -2, 6, -2, 
+                1,  1,  1, 1), byrow = TRUE, ncol = 4, nrow = 4
+)
+b <- c(3, 1.5, 0.5, 0, 0)
+h <- c(-1, 3, 1, 0, 2)
+p <- c(-124, 91, -40, -17, 0)
+q <- c(1, 4, -1, -1)
+l <- c(1, 57, -18, 0)
+solve(A,b)
+solve(C,h)
+solve(M,p)
+solve(N,q)
+solve(O,l)
+
+```
+
+## Git and GitHub
+
+1. Follow the instructions in the notes on installing/setting up Git and GitHub.
+2. Create a simple R file (script, .rmd, etc.) and add some code to it (any code will do!).
+3. Commit your file, then Push it to GitHub. Visit your GitHub repository online to verify that your code pushed correctly.
+4. Edit your code. You can change the code or add new lines. Commit and push again.
+5. Submit the link to your repository on Canvas.
+6. Have a great break!
+
