@@ -1,0 +1,172 @@
+---
+title: "NBA Shot Chart Analysis"
+author: "Reid Leigh"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+```
+
+```{r}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+# Libraries Used
+library(ggplot2)
+suppressPackageStartupMessages(library(dplyr))
+library(grid)
+library(jpeg)
+library(readr)
+
+# Reading in the datasets
+shot_data <- read_csv("NBA_2004_Shots.csv.zip", show_col_types = FALSE)
+shot_data2014 <- read_csv("NBA_2014_Shots.csv.zip", show_col_types = FALSE)
+shot_data2024 <- read_csv("NBA_2024_Shots.csv.zip", show_col_types = FALSE)
+
+```
+
+```{r}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+# Filtering the datasets to show only the Lakers and shots on attempted on the offensive side of the court.
+team_shots <- shot_data %>%
+  filter(TEAM_NAME == "Los Angeles Lakers" , LOC_Y <= 47)
+
+team_shots2014 <- shot_data2014 %>%
+  filter(TEAM_NAME == "Los Angeles Lakers" , LOC_Y <= 47)
+
+team_shots2024 <- shot_data2024 %>%
+  filter(TEAM_NAME == "Los Angeles Lakers" , LOC_Y <= 47)
+
+```
+
+
+```{r}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+#Reading in the half court image and converting it to an image object
+courtImg <- readJPEG("nba_court.jpg")
+courtGrob <- rasterGrob(courtImg, width = unit(1, "npc"), height = unit(1, "npc"))
+
+# Plotting the data onto the image
+shot_chart <- ggplot() +
+  
+  #Adding the image overlay
+  #Court baseline at y=0, 50 feet in width (width of a full sized NBA court), 47 feet in length (half the length of a full sized NBA court)
+  annotation_custom(courtGrob, -25, 25, 0, 47) +
+  
+  # Adding the shots
+  geom_point(data = team_shots, aes(x = LOC_X, y = LOC_Y, color = SHOT_MADE), alpha = 0.5, size = 2) +
+  
+  #Set the dimension of the graphic
+  coord_cartesian(ylim = c(0,47), xlim = c(-25, 25)) + 
+  
+  # Categorizing the shots
+  scale_color_manual(values = c("gold", "purple"), labels = c("Missed", "Made")) +
+  
+  # Adding labels and theme
+  labs(title = "Shot Locations for Los Angeles Lakers (2004)",
+       subtitle = "Made vs Missed Shots",
+       x = "Court X Position", y = "Court Y Position", color = "Shot Outcome") +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+print(shot_chart)
+
+
+```
+
+```{r}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+#Reading in the half court image and converting it to an image object
+courtImg <- readJPEG("nba_court.jpg")
+courtGrob <- rasterGrob(courtImg, width = unit(1, "npc"), height = unit(1, "npc"))
+
+# Plotting the data onto the image
+ggplot() +
+  
+  #Adding the image overlay
+  annotation_custom(courtGrob, -25, 25, 0, 47) +
+  
+  # Adding the shots
+  geom_point(data = team_shots2014, aes(x = LOC_X, y = LOC_Y, color = SHOT_MADE), alpha = 0.5, size = 2) +
+  
+  #Set the dimension of the graphic
+  coord_cartesian(ylim = c(0,47), xlim = c(-25, 25)) + 
+  
+  # Categorizing the shots
+  scale_color_manual(values = c("gold", "purple"), labels = c("Missed", "Made")) +
+  
+  # Adding labels and theme
+  labs(title = "Shot Locations for Los Angeles Lakers (2014)",
+       subtitle = "Made vs Missed Shots",
+       x = "Court X Position", y = "Court Y Position", color = "Shot Outcome") +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+```
+
+```{r}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+#Reading in the half court image and converting it to an image object
+courtImg <- readJPEG("nba_court.jpg")
+courtGrob <- rasterGrob(courtImg, width = unit(1, "npc"), height = unit(1, "npc"))
+
+# Plotting the data onto the image
+shot_chart2024 <- ggplot() +
+  
+  #Adding the image overlay
+  annotation_custom(courtGrob, -25, 25, 0, 47) +
+  
+  # Adding the shots
+  geom_point(data = team_shots2024, aes(x = LOC_X, y = LOC_Y, color = SHOT_MADE), alpha = 0.5, size = 2) +
+  
+  #Set the dimension of the graphic
+  coord_cartesian(ylim = c(0,47), xlim = c(-25, 25)) + 
+  
+  # Catedgorizing the shots
+  scale_color_manual(values = c("gold", "purple"), labels = c("Missed", "Made")) +
+  
+  # Adding labels and theme
+  labs(title = "Shot Locations for Los Angeles Lakers (2024)",
+       subtitle = "Made vs Missed Shots",
+       x = "Court X Position", y = "Court Y Position", color = "Shot Outcome") +
+  theme_minimal() +
+  theme(legend.position = "top")
+
+print(shot_chart2024)
+
+```
+Summary
+
+- Three point shots have increased
+- Mid-range shots have decreased
+- Shots in the paint have seemingly increased as well
+
+\newpage
+
+"Three point shots"
+
+- Seen a dramatic increase in attempts over the past 20 years, the clustering in the graphics have become denser beyond the three point arc
+- Most noticeable seen at the corners , likely due to this spot being closer to the basket
+- Clusters beyond the three point arc look more purple, players have gotten better at making three point shots
+
+"Mid-range shots"
+
+- Seen a dramatic decrease in attempts over the past 20 years, the clustering in the graphics have become sparser in the area between the paint and the three point arc
+- Likely seen has not worth the attempt, lower likelihood of success without the reward of an extra point
+- May only be attempted if wide open or out of necessity (e.g. low on time)
+
+title: "Points in the Paint"
+
+- Seemingly increased over the past 20 years, especially seen near the elbow
+- Teams might see the paint as a marker of high shot-percentage, worth working a little more for a more guaranteed shot
+- Dunks and highly contested shots, many players are driven by money and are being offered more and more each year.  They may being more likely to attempt these types of shots in order to earn more money via brands that want to take advantage of the popularity brought on by a stellar shot.
+
+"The Four Point Shot"
+
+The four point shot has been vaguely suggested or talked about by many people with varying levels of experience.  They have come from fans, from people in the media, and even people well incorporated into the NBA.  However, I think the four point shot does not benefit, and may even worsen the problems that the NBA and its fans are currently facing.  in recent times, live viewership of NBA games have been criticized for being low.  It is widely thought of that this is happening because of how the teams play the game today.  many fans have complained of either the lack of defense present in the game or that the games have become glorified three point contests.  I believe that adding a four point line would only exasperate this problem and even potential make the two pointer obsolete.  However, if you do want to add a four point line you should consider some analytics before deciding where to place it.  Specifically, the expected value of a shot given a team or player.  The expected value of a shot is the shot percentage of a team or player multiplied by how many points the shot is worth.  For example the 2024-2025 Los Angeles Lakers are shooting 36.1% from three and 56.3% from inside the arc.  This means each three pointer attempted is expected to net them 1.083 points while each two pointer is expected to net them 1.126 points.  If you wan the four point line to make an immediate impact that the teams can start to implement into their current gameplans, then you should pick a range that teams would shoot at around 25% from.  This may only be a couple of feet out from the current three point line, probably somewhere between 25-28 feet.  If you want a slower incorporation into the game, I would recommend you push the four point line back, at least beyond 30 feet.  A decision as to how you would like to see the game played going foward is need before dteermining a more exact location of the four point line.
+
